@@ -1,16 +1,32 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import CardProduct from "../components/CardProduct"
-import products from "../data/products"
+import { getProducts } from "../services/api"
 
 const Shop = () => {
 
-  const [productList] = useState(products)
+  const [productList, setProductList] = useState([])
+
+  useEffect(() => {
+
+    const loadProducts = async () => {
+
+      const data = await getProducts()
+
+      setProductList(data)
+
+    }
+
+    loadProducts()
+
+  }, [])
 
   return (
 
     <div className="mt-4">
 
-      <h1 className="text-center mb-4">Tienda de Juguetes</h1>
+      <h1 className="text-center mb-4">
+        Tienda de Juguetes
+      </h1>
 
       <div className="d-flex flex-wrap justify-content-center">
 

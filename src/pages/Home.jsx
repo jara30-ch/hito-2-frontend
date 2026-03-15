@@ -1,19 +1,30 @@
-import { useState } from "react"
-import products from "../data/products"
+import { useState, useEffect } from "react"
 import CardProduct from "../components/CardProduct"
+import { getProducts } from "../services/api"
 
 const Home = () => {
 
-  const [productList] = useState(products)
+  const [productList, setProductList] = useState([])
+
+  useEffect(() => {
+
+    const loadProducts = async () => {
+
+      const data = await getProducts()
+
+      setProductList(data)
+
+    }
+
+    loadProducts()
+
+  }, [])
 
   const featuredProducts = productList.slice(0, 2)
 
   return (
-
     <div>
-
-      {/* HERO SECTION */}
-
+      {/* HERO */}
       <div
         className="bg-light text-center p-5"
         style={{
@@ -43,7 +54,7 @@ const Home = () => {
 
       </div>
 
-      {/* PRODUCTOS DESTACADOS */}
+      {/* PRODUCTOS */}
 
       <div className="container mt-5">
 
@@ -67,7 +78,6 @@ const Home = () => {
       </div>
 
     </div>
-
   )
 }
 

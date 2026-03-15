@@ -10,6 +10,9 @@ import Register from "./pages/Register"
 import Cart from "./pages/Cart"
 import ProductDetail from "./pages/ProductDetail"
 import Profile from "./pages/Profile"
+import CreateProduct from "./pages/CreateProduct";
+
+
 
 function App() {
   return (
@@ -35,6 +38,8 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
 
         <Route path="/profile" element={<Profile />} />
+
+        <Route path="/crear-producto" element={<CreateProduct />} />
 
       </Routes>
       </div>

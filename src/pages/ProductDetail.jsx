@@ -1,75 +1,94 @@
 import { useParams } from "react-router-dom"
-import products from "../data/products"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { getProductById } from "../services/api"
 
 const ProductDetail = () => {
 
-  const [liked, setLiked] = useState(false)
-
-const handleLike = () => {
-  setLiked(!liked)
-}
-
   const { id } = useParams()
 
-  const product = products.find(p => p.id === Number(id))
+  const [product, setProduct] = useState(null)
+
+  const [liked, setLiked] = useState(false)
+
+  const handleLike = () => {
+    setLiked(!liked)
+  }
+
+  useEffect(() => {
+
+    const loadProduct = async () => {
+
+      const data = await getProductById(id)
+
+       console.log("descripcion:", data.descripcion)
+
+      setProduct(data)
+
+    }
+
+    loadProduct()
+
+  }, [id])
 
   if (!product) {
-    return <h2 className="text-center mt-5">Producto no encontrado</h2>
+    return <h2 className="text-center mt-5">Cargando producto...</h2>
   }
 
   return (
 
-    <div className="container mt-5">
+  <div className="container mt-5">
 
-      <div className="row">
+    <div className="row">
 
-        <div className="col-md-6">
+      <div className="col-md-6">
 
-          <img
-            src={product.img}
-            alt={product.name}
-            className="img-fluid rounded"
-          />
+        <img
+          src={product.imagen}
+          alt={product.nombre}
+          className="img-fluid rounded"
+        />
 
-        </div>
+      </div>
 
-        <div className="col-md-6">
+      <div className="col-md-6">
 
-          <h2>{product.name}</h2>
+        <h2>{product.nombre}</h2>
 
-           <span
-    onClick={handleLike}
-    style={{
-      cursor: "pointer",
-      fontSize: "2rem",
-      color: liked ? "red" : "gray"
-    }}
-  >
-    ♥
-  </span>
+        <span
+          onClick={handleLike}
+          style={{
+            cursor: "pointer",
+            fontSize: "2rem",
+            color: liked ? "red" : "gray"
+          }}
+        >
+          ♥
+        </span>
 
-          <span className="badge bg-secondary mb-3">
-            {product.category}
-          </span>
+        <br />
 
-          <p>{product.desc}</p>
+        <span className="badge bg-secondary mb-3">
+          {product.categoria}
+        </span>
 
-          <h4 className="fw-bold">
-            ${product.price.toLocaleString("es-CL")}
-          </h4>
+        <p className="mt-3">
+          {product.descripcion|| "SIN DESCRIPCIÓN"}
+        </p>
 
-          <button className="btn btn-primary mt-3">
-            Agregar al carrito
-          </button>
+        <h4 className="fw-bold">
+          ${Number(product.precio).toLocaleString("es-CL")}
+        </h4>
 
-        </div>
+        <button className="btn btn-primary mt-3">
+          Agregar al carrito
+        </button>
 
       </div>
 
     </div>
 
-  )
+  </div>
+)
 }
 
 export default ProductDetail
